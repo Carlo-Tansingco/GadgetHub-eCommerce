@@ -114,6 +114,7 @@ function proceedToCheckout() {
 
 function completePurchase(event) {
     event.preventDefault();
+    console.log("Complete Purchase function called");
     alert("Purchase completed!");
     localStorage.removeItem("cart");
     window.location.href = "confirmation.html"; 
