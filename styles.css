@@ -14,11 +14,6 @@ nav .navbar-nav .nav-link {
     color: #333;
 }
 
-@media (max-width: 768px) {
-    .navbar-expand-lg .navbar-nav .nav-item {
-        margin: 5px 0;
-    }
-}
 
 .banner-image {
     background: url('images/banner.jpg') no-repeat center center / cover;
@@ -34,6 +29,7 @@ nav .navbar-nav .nav-link {
     height: 750px; 
     display: flex;
     align-items: center;
+    justify-content: center; 
 }
 
 .banner-section::before {
@@ -49,17 +45,23 @@ nav .navbar-nav .nav-link {
 
 .banner-content {
     position: relative;
-    z-index: 2; 
-    max-width: 50%; 
-    margin-left: 5%; 
+    z-index: 2;
+    max-width: 90%; 
+    padding: 20px;
+    text-align: center;
     background-color: rgba(116, 116, 116, 0.5); 
+    color: white;
+    border-radius: 10px; 
 }
 
+.banner-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
 
-@media (max-width: 768px) {
-    .banner-image {
-        height: 30vh;
-    }
+.banner-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
 
 #product-list .card {
@@ -79,24 +81,6 @@ nav .navbar-nav .nav-link {
     object-fit: cover;
 }
 
-@media (max-width: 768px) {
-    .row-cols-md-2 {
-        --bs-columns: 1;
-    }
-    .row-cols-lg-4 {
-        --bs-columns: 2;
-    }
-}
-
-@media (max-width: 576px) {
-    .row-cols-md-2 {
-        --bs-columns: 1;
-    }
-    .row-cols-lg-4 {
-        --bs-columns: 1;
-    }
-}
-
 footer {
     padding: 20px;
     text-align: center;
@@ -105,6 +89,7 @@ footer {
 
 footer .col-md-3 ul {
     padding-left: 0;
+    text-align: center;
 }
 
 footer .col-md-3 ul li {
@@ -117,7 +102,54 @@ footer .col-md-3 ul li a {
 }
 
 @media (max-width: 768px) {
+    .navbar-expand-lg .navbar-nav .nav-item {
+        margin: 5px 0;
+    }
+    .banner-section {
+        height: 400px;
+    }
+    .banner-content h1 {
+        font-size: 2rem;
+    }
+    .banner-content p {
+        font-size: 1rem;
+    }
+    .btn-lg {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+    .row-cols-md-2 {
+        --bs-columns: 1;
+    }
+    .row-cols-lg-4 {
+        --bs-columns: 2;
+    }
     footer .col-md-3 {
+        text-align: center;
         margin-bottom: 20px;
+    }
+    footer .col-md-3 ul li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-section {
+        height: 300px;
+    }
+    .banner-content h1 {
+        font-size: 1.5rem;
+    }
+    .banner-content p {
+        font-size: 0.9rem;
+    }
+    .row-cols-md-2,
+    .row-cols-lg-4 {
+        --bs-columns: 1;
+    }
+    footer .col-md-3 ul li {
+        display: block;
+        margin: 5px 0;
     }
 }
