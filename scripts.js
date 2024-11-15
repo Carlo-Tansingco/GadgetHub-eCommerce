@@ -29,7 +29,6 @@ const products = [
     { id: 28, name: "Smart Plug Outlet", price: 19.99, image: "images/smart_plug.jpg" },
     { id: 29, name: "Drone with Camera", price: 249.99, image: "images/drone_camera.jpg" },
     { id: 30, name: "Gaming Headset with Mic", price: 79.99, image: "images/gaming_headset.jpg" }
-
 ];
 
 function displayProducts() {
