@@ -83,13 +83,13 @@ nav .navbar-nav .nav-link {
 
 
 .banner-image {
-    background: url('images/banner.jpg') no-repeat center center / cover;
+    background: url('https://www.jadeglobal.com/sites/default/files/2021-07/top-hi-tech-trends-blog-banner-min.jpg') no-repeat center center / cover;
     height: 50vh;
 }
 
 .banner-section {
     position: relative;
-    background-image: url("images/banner.jpg"); 
+    background-image: url("https://www.jadeglobal.com/sites/default/files/2021-07/top-hi-tech-trends-blog-banner-min.jpg"); 
     background-size: cover;
     background-position: center;
     width: 100%;

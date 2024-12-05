@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("edit-product-category").value = product.category;
     }
 
+    if (window.location.pathname.endsWith("sales-dashboard.html")) {
+        loadSalesMetrics();
+        loadProductPerformance();
+        loadCustomerInsights();
+    }
+
     // Update header links dynamically based on login state
     updateHeader();
 });
@@ -923,3 +929,60 @@ document.getElementById('payment-form').addEventListener('change', (event) => {
         document.getElementById('card-element').classList.remove('d-none');
     }
 });
+
+
+//SalesMetrics
+function loadSalesMetrics() {
+    const totalSales = products.reduce((sum, product) => sum + product.price * (product.unitsSold || 0), 0);
+    const totalOrders = products.reduce((sum, product) => sum + (product.unitsSold || 0), 0);
+    const averageOrderValue = totalOrders ? (totalSales / totalOrders).toFixed(2) : 0;
+
+    document.getElementById("total-sales").textContent = `$${totalSales.toFixed(2)}`;
+    document.getElementById("total-orders").textContent = totalOrders;
+    document.getElementById("average-order-value").textContent = `$${averageOrderValue}`;
+
+    renderRevenueChart();
+}
+
+function renderRevenueChart() {
+    const ctx = document.getElementById("revenue-chart").getContext("2d");
+    const revenueData = products.map(product => product.price * (product.unitsSold || 0));
+    const labels = products.map(product => product.name);
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Revenue by Product",
+                data: revenueData,
+                backgroundColor: "rgba(54, 162, 235, 0.6)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1
+            }]
+        }
+    });
+}
+
+function loadProductPerformance() {
+    const tbody = document.getElementById("product-performance-data");
+    products.forEach(product => {
+        const row = `
+            <tr>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.unitsSold || 0}</td>
+                <td>$${(product.price * (product.unitsSold || 0)).toFixed(2)}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function loadCustomerInsights() {
+    const repeatPurchases = 50; // Placeholder for actual calculation
+    const averageCustomerSpending = 120; // Placeholder for actual calculation
+
+    document.getElementById("repeat-purchases").textContent = repeatPurchases;
+    document.getElementById("average-customer-spending").textContent = `$${averageCustomerSpending.toFixed(2)}`;
+}
