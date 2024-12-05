@@ -15,14 +15,12 @@
                 <a class="navbar-brand" href="index.html">
                     <img src="images/logo.png" alt="GadgetHub Logo" width="120">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a></li>
+                    <ul class="navbar-nav ms-auto" id="nav-links">
+                        <!-- Cart and Login links will be dynamically added -->
                     </ul>
                 </div>
             </nav>
@@ -30,6 +28,40 @@
     </header>
     <main class="container my-5">
         <h2 class="text-center mb-4">Our Products</h2>
+        <!-- Search Bar and Filters -->
+        <section class="mb-4">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <input type="text" id="search-bar" class="form-control" placeholder="Search products...">
+                </div>
+                <div class="col-md-3">
+                    <select id="category-filter" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="Gadgets">Gadgets</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Smart Home">Smart Home</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="range" id="price-filter" class="form-range" min="1" max="500" step="1">
+                    <label for="price-filter" class="form-label">Max Price: $<span id="price-value">500</span></label>
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <select id="sort-filter" class="form-select">
+                        <option value="">Sort By</option>
+                        <option value="priceLowHigh">Price: Low to High</option>
+                        <option value="priceHighLow">Price: High to Low</option>
+                        <option value="popularity">Popularity</option>
+                        <option value="nameAZ">Name: A → Z</option>
+                        <option value="nameZA">Name: Z → A</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product List -->
         <div id="product-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"></div>
     </main>
     <footer class="bg-dark text-light py-4">
@@ -45,6 +77,7 @@
                         <li><a href="index.html" class="text-decoration-none text-light">Home</a></li>
                         <li><a href="product.html" class="text-decoration-none text-light">Products</a></li>
                         <li><a href="cart.html" class="text-decoration-none text-light">Cart</a></li>
+                        <li><a href="account.html" class="text-decoration-none text-light">Account</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-3">

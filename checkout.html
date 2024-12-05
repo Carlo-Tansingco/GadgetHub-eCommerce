@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Stripe JavaScript SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID"></script>
     <title>Checkout</title>
 </head>
 <body>
@@ -15,14 +21,12 @@
                 <a class="navbar-brand" href="index.html">
                     <img src="images/logo.png" alt="GadgetHub Logo" width="120">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a></li>
+                    <ul class="navbar-nav ms-auto" id="nav-links">
+                        <!-- Cart and Login links will be dynamically added -->
                     </ul>
                 </div>
             </nav>
@@ -50,6 +54,15 @@
             <div class="col-12">
                 <input type="text" class="form-control" placeholder="Card Number" required>
             </div>
+            <!--
+            <div class="col-12" id="payment-method-container">
+
+            <div id="card-element"></div>
+
+            <div id="paypal-button-container" class="d-none"></div>
+            </div>
+            -->
+        
             <div class="col-12">
                 <button type="submit" class="btn btn-primary w-100">Complete Purchase</button>
             </div>
@@ -57,23 +70,24 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="scripts.js"></script>
     <footer class="bg-dark text-light py-4">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
                     <img src="images/logo.png" alt="GadgetsHub Logo" class="mb-2" width="100">
                     <p>Discover the Future <br> With GadgetsHub!</p>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
                     <h3>Navigation</h3>
                     <ul class="list-unstyled">
                         <li><a href="index.html" class="text-decoration-none text-light">Home</a></li>
-                        <li><a href="products.html" class="text-decoration-none text-light">Products</a></li>
+                        <li><a href="product.html" class="text-decoration-none text-light">Products</a></li>
                         <li><a href="cart.html" class="text-decoration-none text-light">Cart</a></li>
+                        <li><a href="account.html" class="text-decoration-none text-light">Account</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
                     <h3>Useful Links</h3>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-decoration-none text-light">Coupons</a></li>
@@ -82,7 +96,7 @@
                         <li><a href="#" class="text-decoration-none text-light">Join Affiliate</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
                     <h3>Follow Us</h3>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-decoration-none text-light">Facebook</a></li>
@@ -96,6 +110,5 @@
             <div class="text-center">&copy; Copyright 2024 - GadgetsHub Store</div>
         </div>
     </footer>
-    <script src="scripts.js"></script>
 </body>
 </html>

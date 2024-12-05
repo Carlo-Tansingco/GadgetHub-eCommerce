@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-
-
     <title>Online Store - Home</title>
 </head>
 <body>
@@ -17,19 +15,18 @@
                 <a class="navbar-brand" href="index.html">
                     <img src="images/logo.png" alt="GadgetHub Logo" width="120">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a></li>
+                    <ul class="navbar-nav ms-auto" id="nav-links">
+                        <!-- Cart and Login links will be dynamically added -->
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
+    
 
     <section class="banner-section text-white d-flex align-items-center">
         <div class="banner-content p-5">
@@ -41,49 +38,57 @@
         </div>
     </section>
 
-    <main class="container my-5">
-        <section id="featured-products">
-            <h2 class="text-center mb-4">Featured Products</h2>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="product-list"></div>
+    <main class="container my-4">
+        <!-- Description Section -->
+        <section id="description" class="mb-5">
+            <h1 class="text-center">Welcome to GadgetHub</h1>
+            <p class="lead text-center">
+                Your one-stop shop for the latest and greatest gadgets, accessories, and smart home devices. <br>
+                We bring innovation to your fingertips with quality products and unbeatable prices.
+            </p>
+        </section>
+    
+        <!-- About Us Section -->
+        <section id="about-us" class="mb-5">
+            <h2>About Us</h2>
+            <p>
+                At <strong>GadgetHub</strong>, we believe in the transformative power of technology to inspire, connect, and elevate lives. 
+                Since our journey began in 2020, we have been committed to delivering the latest innovations in gadgets to our 
+                customers, coupled with unmatched service that prioritizes their needs.
+            </p>
+            <p>
+                Our mission is simple yet profound: to make cutting-edge technology accessible and enjoyable for everyone, 
+                regardless of their tech expertise. Whether you're a die-hard tech enthusiast, a professional seeking reliable tools, 
+                or someone searching for the perfect gift to wow a loved one, GadgetHub is your go-to destination.
+            </p>
+            <p>
+                We pride ourselves on curating a diverse selection of products that blend <strong>functionality</strong>, <strong>style</strong>, and <strong>value</strong>. 
+                From sleek smartwatches and powerful laptops to unique accessories and must-have gadgets, every item in our collection 
+                is chosen to meet the high standards of our customers.
+            </p>
+            <p>
+                Behind our brand is a passionate team of technology lovers who are constantly on the lookout for trends and 
+                advancements. We strive not only to provide products but also to educate and empower our customers, ensuring they 
+                make the best choices for their needs.
+            </p>
+            <p>
+                At GadgetHub, we’re not just about selling gadgets – we’re about creating an experience. We envision a world where 
+                technology is a source of joy, convenience, and connection for everyone. Join us in exploring the future, one gadget at a time.
+            </p>
+        </section>
+    
+        <!-- Branches Section -->
+        <section id="branches" class="mb-5">
+            <h2>Our Branches</h2>
+            <ul>
+                <li><strong>Muntinlupa City:</strong> 123 Alabang Tech Avenue, Alabang</li>
+                <li><strong>Quezon City:</strong> 456 Innovation Blvd, Diliman</li>
+                <li><strong>Manila:</strong> 789 Intramuros Lane, Ermita</li>
+                <li><strong>Cebu City:</strong> 321 IT Park Avenue, Lahug</li>
+                <li><strong>Taguig:</strong> 654 Digital Drive, Bonifacio Global City (BGC)</li>
+            </ul>
         </section>
     </main>
-
-    <script>
-        const featuredProducts = [
-            { id: 1, name: "Virtual Reality Glasses", price: 299.00, image: "images/vr_glasses.jpg" },
-            { id: 2, name: "Facial Recognition Home Hub", price: 149.00, image: "images/home_hub.jpg" },
-            { id: 3, name: "3D Printing Pen", price: 45.00, image: "images/printing_pen.jpg" },
-            { id: 4, name: "5JS Drone", price: 199.00, image: "images/drone.jpg" },
-        ];
-
-        function displayFeaturedProducts() {
-            const productContainer = document.getElementById("product-list");
-            featuredProducts.forEach(product => {
-                productContainer.innerHTML += `
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
-                                <p class="card-text">$${product.price.toFixed(2)}</p>
-                                <button onclick="addToCart(${product.id})" class="btn btn-warning">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addToCart(productId) {
-            const product = featuredProducts.find(item => item.id === productId);
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart.push(product);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert(`${product.name} has been added to your cart!`);
-        }
-
-        displayFeaturedProducts();
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFz1z8jHFn58oaA13tWomW4Yx04EcOQ3pSA8BOQ6SGNrYvPsg2O7YtHzz/" crossorigin="anonymous"></script>
 
@@ -112,23 +117,24 @@
             </div>
         </div>
     </section>
-
+    <script src="scripts.js"></script>
     <footer class="bg-dark text-light py-4">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3 text-center text-md-start mb-3 mb-md-0">
                     <img src="images/logo.png" alt="GadgetsHub Logo" class="mb-2" width="100">
                     <p>Discover the Future <br> With GadgetsHub!</p>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-6 col-md-3">
                     <h3>Navigation</h3>
                     <ul class="list-unstyled">
                         <li><a href="index.html" class="text-decoration-none text-light">Home</a></li>
-                        <li><a href="products.html" class="text-decoration-none text-light">Products</a></li>
+                        <li><a href="product.html" class="text-decoration-none text-light">Products</a></li>
                         <li><a href="cart.html" class="text-decoration-none text-light">Cart</a></li>
+                        <li><a href="account.html" class="text-decoration-none text-light">Account</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-6 col-md-3">
                     <h3>Useful Links</h3>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-decoration-none text-light">Coupons</a></li>
@@ -137,12 +143,12 @@
                         <li><a href="#" class="text-decoration-none text-light">Join Affiliate</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 text-center text-md-start">
+                <div class="col-12 col-md-3">
                     <h3>Follow Us</h3>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-decoration-none text-light">Facebook</a></li>
-                        <li><a href="#" class="text-decoration-none text-light">Twitter</a></li>
-                        <li><a href="#" class="text-decoration-none text-light">Instagram</a></li>
+                        <li><a href="#" class="text-decoration-none text-light me-2">Facebook</a></li>
+                        <li><a href="#" class="text-decoration-none text-light me-2">Twitter</a></li>
+                        <li><a href="#" class="text-decoration-none text-light me-2">Instagram</a></li>
                         <li><a href="#" class="text-decoration-none text-light">YouTube</a></li>
                     </ul>
                 </div>

@@ -1,3 +1,70 @@
+/* Description Section */
+#description {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#description h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #343a40;
+}
+
+#description p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+/* About Us Section */
+#about-us h2 {
+    font-size: 2rem;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+#about-us p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Branches Section */
+#branches h2 {
+    font-size: 2rem;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+#branches ul {
+    list-style: none;
+    padding: 0;
+}
+
+#branches li {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+#branches li strong {
+    color: #495057;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+
+
+
 body, h2, p {
     margin: 0;
     padding: 0;
@@ -46,12 +113,13 @@ nav .navbar-nav .nav-link {
 .banner-content {
     position: relative;
     z-index: 2;
-    max-width: 90%; 
+    max-width: 60%; 
     padding: 20px;
     text-align: center;
     background-color: rgba(116, 116, 116, 0.5); 
     color: white;
     border-radius: 10px; 
+    transition: max-width 0.3s ease-in-out, padding 0.3s ease-in-out;
 }
 
 .banner-content h1 {
@@ -74,11 +142,23 @@ nav .navbar-nav .nav-link {
     transform: scale(1.05);
 }
 
-.product-img, .cart-img {
-    width: 100%;
-    height: auto;
-    max-height: 200px;
-    object-fit: cover;
+.cart-img {
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.cart-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.product-img {
+    width: 100%; 
+    height: 250px; 
+    object-fit: cover; 
+    object-position: center; 
+    border-radius: 5px; 
 }
 
 footer {
@@ -107,6 +187,10 @@ footer .col-md-3 ul li a {
     }
     .banner-section {
         height: 400px;
+    }
+    .banner-content{
+        max-width: 80%; 
+        padding: 15px; 
     }
     .banner-content h1 {
         font-size: 2rem;
@@ -137,6 +221,10 @@ footer .col-md-3 ul li a {
 @media (max-width: 576px) {
     .banner-section {
         height: 300px;
+    }
+    .banner-content {
+        max-width: 90%; 
+        padding: 10px; 
     }
     .banner-content h1 {
         font-size: 1.5rem;
