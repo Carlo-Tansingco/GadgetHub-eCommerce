@@ -26,18 +26,30 @@
             </nav>
         </div>
     </header>
+
     
-    <section class="text-center my-5">
+    <main class="container text-center my-5">
         <h1>Thank You for Your Order!</h1>
-    </section>
-    
-    <main class="text-center my-4">
-        <img src="images/confirm.png" class="img-fluid" alt="Order Confirmation"><br><br><br>
-        <h2>Your order has been placed successfully.</h2>
-        <p>Order Number: <strong>#12345</strong></p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_green_checkmark.svg/1024px-Eo_circle_green_checkmark.svg.png" class="img-fluid" alt="Order Confirmation"><br><br><br>
+        <p>Your order has been placed successfully.</p>
+        <h2>Order Number: <strong id="order-number">Loading...</strong></h2>
+
         <a href="product.html" class="btn btn-warning">Continue Shopping &#10142;</a>
     </main>
+
+    <script>
+        // Retrieve the order number from localStorage and display it
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderId = localStorage.getItem("orderId");
+            if (orderId) {
+                document.getElementById("order-number").textContent = orderId;
+                // Optionally, you can remove the orderId from localStorage after it's used
+                localStorage.removeItem("orderId");
+            }
+        });
+    </script>
     <script src="scripts.js"></script>
+
     <footer class="bg-dark text-light py-4">
         <div class="container">
             <div class="row">

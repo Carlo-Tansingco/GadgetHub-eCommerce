@@ -5,9 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
         setupFilters();
     }
 
+    
+
     // Check if on cart page and load cart
     if (window.location.pathname.endsWith("cart.html")) {
         loadCart();
+    }
+
+    if (window.location.pathname.endsWith("cart.html")) {
+        disableCheckoutIfCartEmpty();
     }
 
     // Check if on checkout page and initialize payment methods
@@ -18,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Call admin dashboard rendering if on admin page
     if (window.location.pathname.endsWith("admin.html")) {
         showAdminDashboard();
+        loadAllUserOrders();
     }
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -38,6 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
         loadSalesMetrics();
         loadProductPerformance();
         loadCustomerInsights();
+    }
+
+    if (window.location.pathname.endsWith("account.html")) {
+        updateWishlist();
+        updateOrderHistory();
     }
 
     // Update header links dynamically based on login state
@@ -423,6 +435,7 @@ function isProductAlreadyInWishlist(productId) {
 function loadCart() {
     if (!currentUser) {
         alert("You must be logged in to view your cart.");
+        window.location.href = "account.html"; // Redirect to login page if not logged in
         return;
     }
 
@@ -432,6 +445,8 @@ function loadCart() {
     if (!currentUserData) return;
 
     const cartContainer = document.getElementById("cart-items");
+    const checkoutButton = document.getElementById("checkout-button");
+
     if (!cartContainer) return;
 
     const userCart = currentUserData.cart;
@@ -440,10 +455,12 @@ function loadCart() {
 
     if (userCart.length === 0) {
         cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        checkoutButton.disabled = true; // Disable checkout button if cart is empty
         document.getElementById("cart-total").textContent = "0.00";
         return;
     }
 
+    // Populate the cart
     userCart.forEach((item, index) => {
         cartContainer.innerHTML += `
             <div class="col-md-12 d-flex align-items-center mb-4">
@@ -462,6 +479,24 @@ function loadCart() {
     });
 
     updateCartTotal();
+}
+
+// Function to disable checkout if cart is empty
+function disableCheckoutIfCartEmpty() {
+    const checkoutButton = document.getElementById("checkout-button");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUserData = users.find(user => user.email === currentUser.email);
+
+    if (!currentUserData) return;
+
+    const userCart = currentUserData.cart;
+
+    // If cart is empty, disable checkout button
+    if (userCart.length === 0) {
+        checkoutButton.disabled = true;
+    } else {
+        checkoutButton.disabled = false;
+    }
 }
 
 // Update the cart total
@@ -495,6 +530,8 @@ function updateQuantity(index, newQuantity) {
 
     updateCartTotal();
 }
+
+
 
 
 // Remove item from the user's cart
@@ -534,10 +571,10 @@ function updateHeader() {
                     <span class="nav-link"><strong>Welcome, ${currentUser.firstName} |  </strong></span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a class="nav-link" href="admin.html"><i class="fas fa-tools"></i> Admin Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html"><i class="fas fa-tools"></i> Admin Dashboard</a>
+                    <a class="nav-link" href="sales-dashboard.html"><i class="fas fa-poll"></i> Sales Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
@@ -691,22 +728,33 @@ function logout() {
 
 // Account Details View
 function showAccountDetails() {
-    currentUser = JSON.parse(localStorage.getItem("currentUser")); // Fetch the updated current user
+    const accountDetails = document.getElementById("account-details");
+    const loginForm = document.getElementById("login-form");
+    const orderHistory = document.getElementById("order-history");
 
-    if (!currentUser) {
+    if (currentUser) {
+        // User is logged in
+        loginForm.classList.add("d-none");
+        accountDetails.classList.remove("d-none");
+        document.getElementById("user-name").textContent = currentUser.firstName;
+
+        // Populate order history
+        if (currentUser.orderHistory && currentUser.orderHistory.length > 0) {
+            orderHistory.innerHTML = currentUser.orderHistory.map(order =>
+                `<li class="list-group-item">Order ID: ${order.id}, Total: $${order.total.toFixed(2)}</li>`
+            ).join('');
+        } else {
+            orderHistory.innerHTML = "<li class='list-group-item'>No orders found.</li>";
+        }
+    } else {
+        // User is not logged in
+        loginForm.classList.remove("d-none");
+        accountDetails.classList.add("d-none");
         alert("Please log in to view your account.");
-        window.location.href = "index.html"; // Redirect to the homepage if not logged in
-        return;
     }
-
-    document.getElementById("login-form").classList.add("d-none");
-    document.getElementById("signup-form").classList.add("d-none");
-    document.getElementById("account-details").classList.remove("d-none");
-
-    document.getElementById("user-name").innerText = `${currentUser.firstName} ${currentUser.lastName}`;
-    updateOrderHistory();
-    updateWishlist(); // Call to update the wishlist UI
 }
+
+document.addEventListener("DOMContentLoaded", showAccountDetails);
 
 
 // Update order history
@@ -720,6 +768,67 @@ function updateOrderHistory() {
         orderHistoryEl.appendChild(li);
     });
 }
+
+function loadOrderHistory() {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const orderHistoryEl = document.getElementById("order-history");
+
+    if (currentUser && currentUser.orderHistory) {
+        orderHistoryEl.innerHTML = currentUser.orderHistory.map(order => `
+            <li class="list-group-item">
+                <strong>Order ID:</strong> ${order.id}<br>
+                <strong>Date:</strong> ${order.date}<br>
+                <strong>Total:</strong> $${order.total.toFixed(2)}<br>
+                <strong>Items:</strong>
+                <ul>
+                    ${order.items.map(item => `<li>${item.name} (x${item.quantity || 1})</li>`).join('')}
+                </ul>
+            </li>
+        `).join('');
+    } else {
+        orderHistoryEl.innerHTML = '<li class="list-group-item">No orders found.</li>';
+    }
+}
+
+
+
+function loadAllUserOrders() {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const orderListContainer = document.getElementById("order-list");
+
+    if (!orderListContainer) return;
+
+    orderListContainer.innerHTML = ""; // Clear existing orders
+
+    let hasOrders = false;
+
+    users.forEach(user => {
+        if (user.orderHistory && user.orderHistory.length > 0) {
+            hasOrders = true;
+            user.orderHistory.forEach(order => {
+                const orderElement = `
+                    <li class="list-group-item">
+                        <strong>User:</strong> ${user.email}<br>
+                        <strong>Order ID:</strong> ${order.id}<br>
+                        <strong>Date:</strong> ${order.date}<br>
+                        <strong>Total:</strong> $${order.total.toFixed(2)}<br>
+                        <strong>Items:</strong>
+                        <ul>
+                            ${order.items.map(item => `<li>${item.name} (x${item.quantity || 1})</li>`).join('')}
+                        </ul>
+                    </li>
+                `;
+                orderListContainer.innerHTML += orderElement;
+            });
+        }
+    });
+
+    if (!hasOrders) {
+        orderListContainer.innerHTML = "<p>No orders available.</p>";
+    }
+}
+
+
 
 // Update wishlist
 function updateWishlist() {
@@ -829,7 +938,9 @@ function proceedToCheckout() {
 }
 
 // Add to order history function
-function completePurchase() {
+function completePurchase(event) {
+    event.preventDefault(); // Prevent form submission reload
+
     if (!currentUser) {
         alert("You must be logged in to complete a purchase.");
         return;
@@ -848,23 +959,35 @@ function completePurchase() {
     }
 
     const order = {
-        id: new Date().getTime(), // Unique order ID based on timestamp
-        items: [...userCart], // Copy the cart items into the order
-        total: userCart.reduce((total, item) => total + item.price, 0), // Calculate the total
+        id: new Date().getTime(), // Unique order ID
+        items: [...userCart], // Copy the cart items
+        total: userCart.reduce((total, item) => total + item.price * (item.quantity || 1), 0),
         date: new Date().toLocaleString() // Record the order date
     };
 
-    // Add the order to the user's order history
+    // Update product unitsSold
+    userCart.forEach(cartItem => {
+        const product = products.find(p => p.id === cartItem.id);
+        if (product) {
+            product.unitsSold = (product.unitsSold || 0) + (cartItem.quantity || 1);
+        }
+    });
+
+    // Ensure orderHistory is initialized
+    users[userIndex].orderHistory = users[userIndex].orderHistory || [];
     users[userIndex].orderHistory.push(order);
 
     // Clear the user's cart
     users[userIndex].cart = [];
     localStorage.setItem("users", JSON.stringify(users));
+
     alert("Purchase completed successfully!");
 
-    window.location.href = "confirmation.html";
-}
+    // Store the order ID for confirmation page
+    localStorage.setItem("orderId", order.id);
 
+    window.location.href = "confirmation.html"; // Redirect to confirmation page
+}
 
 
 function initializePaymentMethods() {
@@ -933,8 +1056,19 @@ document.getElementById('payment-form').addEventListener('change', (event) => {
 
 //SalesMetrics
 function loadSalesMetrics() {
-    const totalSales = products.reduce((sum, product) => sum + product.price * (product.unitsSold || 0), 0);
-    const totalOrders = products.reduce((sum, product) => sum + (product.unitsSold || 0), 0);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    let totalSales = 0;
+    let totalOrders = 0;
+
+    users.forEach(user => {
+        if (user.orderHistory) {
+            user.orderHistory.forEach(order => {
+                totalSales += order.total;
+                totalOrders += 1;
+            });
+        }
+    });
+
     const averageOrderValue = totalOrders ? (totalSales / totalOrders).toFixed(2) : 0;
 
     document.getElementById("total-sales").textContent = `$${totalSales.toFixed(2)}`;
@@ -966,6 +1100,8 @@ function renderRevenueChart() {
 
 function loadProductPerformance() {
     const tbody = document.getElementById("product-performance-data");
+    tbody.innerHTML = ""; // Clear existing rows to avoid duplication
+
     products.forEach(product => {
         const row = `
             <tr>
@@ -979,10 +1115,29 @@ function loadProductPerformance() {
     });
 }
 
-function loadCustomerInsights() {
-    const repeatPurchases = 50; // Placeholder for actual calculation
-    const averageCustomerSpending = 120; // Placeholder for actual calculation
 
-    document.getElementById("repeat-purchases").textContent = repeatPurchases;
-    document.getElementById("average-customer-spending").textContent = `$${averageCustomerSpending.toFixed(2)}`;
+
+function loadCustomerInsights() {
+    // Retrieve orders and users from localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    let repeatPurchaseCount = 0;
+    let totalSpending = 0;
+    let customerCount = 0;
+
+    // Loop through each user and their orders
+    users.forEach(user => {
+        if (!user.isAdmin && user.orderHistory && user.orderHistory.length > 0) {
+            const orderCount = user.orderHistory.length;
+            totalSpending += user.orderHistory.reduce((sum, order) => sum + order.total, 0);
+            if (orderCount > 1) repeatPurchaseCount++;
+            customerCount++;
+        }
+    });
+
+    // Calculate average spending
+    const averageSpending = customerCount > 0 ? (totalSpending / customerCount).toFixed(2) : 0;
+
+    // Update the UI
+    document.getElementById("repeat-purchases").textContent = repeatPurchaseCount;
+    document.getElementById("average-customer-spending").textContent = `$${averageSpending}`;
 }
